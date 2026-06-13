@@ -1,0 +1,27 @@
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #C8102E;
+  --red-dark: #9e0b22;
+  --red-light: #fdf0f2;
+  --gold: #b8975a;
+  --gold-light: #f9f4ec;
+  --ink: #1a1a2e;
+  --ink-mid: #3d3d55;
+  --ink-light: #6b6b8a;
+  --border: #ddd8f0;
+  --surface: #fafafa;
+  --white: #ffffff;
+  --success: #2e7d52;
+  --tab-active-bg: #C8102E;
+  --shadow: 0 2px 16px rgba(26,26,46,0.08);
+  --shadow-lg: 0 8px 40px rgba(26,26,46,0.13);
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #f0eef8;
+  min-height: 100vh;
+  color: var(--ink);
+}
