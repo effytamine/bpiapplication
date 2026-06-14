@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS applicants (
     mother_name VARCHAR(30) NOT NULL,
     edu_level VARCHAR(30) NOT NULL,
     civil_status VARCHAR(30) NOT NULL,
-    depedents INT NOT NULL,
+    dependents INT NOT NULL,
     app_tin VARCHAR(20) NOT NULL,
     sss_gsis VARCHAR(20) NOT NULL,
     car_own VARCHAR(30) NOT NULL,

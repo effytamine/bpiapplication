@@ -40,7 +40,7 @@ public class ApplicantRepository {
             ps.setString(8, a.getCivilStatus().name());
             ps.setInt(9, a.getNumberOfDependents());
             ps.setString(10, a.getTinNumber());
-            ps.setString(11, a.getSSSorGSISnumber());
+            ps.setString(11, a.getSSSorGSISNumber());
             ps.setString(12, a.getCarOwnership().name());
             ps.setString(13, a.getCitizenship());
             ps.setString(14, a.getMobileNumber());

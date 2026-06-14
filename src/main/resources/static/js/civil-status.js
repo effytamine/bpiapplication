@@ -1,7 +1,7 @@
 // ── Civil Status Handler ──
 
 function onCivilStatusChange(val) {
-  isMarried = val === 'M';
+  isMarried = val === 'MARRIED';
   const spouseBtn = document.getElementById('spouseTabBtn');
   if (isMarried) {
     spouseBtn.classList.remove('hidden-tab');

@@ -1,6 +1,9 @@
 package com.dds.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dds.model.Applicant;
 import com.dds.model.CivilStatus;
@@ -43,36 +46,48 @@ public class BPIService {
         this.workRepository = workRepository;
     }
 
-    public void populateDatabase(Applicant a, DOSInfo d, DOSRelInfo dr, Spouse s, SupplementaryCardHolder h, Work w) {
-        int id = applicantRepository.createApplicant(a);
+    @Transactional
+    public void populateDatabase(Applicant a, DOSInfo d, List<DOSRelInfo> drList, Spouse s, List<SupplementaryCardHolder> hList, Work w) {
+        int generatedId = applicantRepository.createApplicant(a);
 
-        h.setApplicantID(id);
-        h.setId(currentSupId++);
-        w.setId(id);
+        for (SupplementaryCardHolder h : hList) {
+            h.setApplicantID(generatedId);
+            h.setId(currentSupId++);
+        }
         
+        w.setId(generatedId);
+
         if (a.isDosFlag()) {
-            d.setId(id);
+            d.setId(generatedId);
             if (!dosInfoRepository.populateDOSInfoTable(d)) {
                 throw new RuntimeException("Error in populating the dosdb");
             }
         }
 
         if (a.isRelDosFlag()) {
-            dr.setId(id);
-            if (!dosRelInfoRepository.populateDOSInfoTable(dr)) {
-                throw new RuntimeException("Error in populating the reldosdb");
+            for (DOSRelInfo dr : drList) {
+                dr.setId(generatedId);
+                if (!dosRelInfoRepository.populateDOSInfoTable(dr)) {
+                    throw new RuntimeException("Error in populating the reldosdb");
+                }
             }
         }
 
         if (a.getCivilStatus() == CivilStatus.MARRIED) {
-            s.setId(id);
+            s.setId(generatedId);
             if (!spouseRepository.populateSpouseTable(s)) {
                 throw new RuntimeException("Error in populating the spousedb");
             }
         }
 
-        if (!supplementaryCardholderRepository.populateSupplementaryCardholderTable(h)) {
-            throw new RuntimeException("Error in populating the supplementarydb");
+        if (hList != null && !hList.isEmpty()) {
+            for (SupplementaryCardHolder h : hList) {
+                h.setApplicantID(generatedId);
+                h.setId(currentSupId++);
+                if (!supplementaryCardholderRepository.populateSupplementaryCardholderTable(h)) {
+                    throw new RuntimeException("Error in populating the supplementarydb");
+                }
+            }
         }
 
         if (!workRepository.populateWorkTable(w)) {

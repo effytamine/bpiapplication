@@ -14,13 +14,23 @@ public class DOSRelInfoRepository {
     }
 
     public boolean populateDOSInfoTable(DOSRelInfo d) {
-        String sql = "INSERT INTO dos_rel_info (applicant_id, dos_rel_name, dos_rel) VALUES (?, ?, ?)";
+        int currentCount = jdbcTemplate.queryForObject(
+            "SELECT COUNT(*) FROM dos_rel_info WHERE applicant_id = ?", 
+            Integer.class, 
+            Integer.valueOf(d.getId())
+        );
+        
+        d.setRelID(currentCount + 1);
+
+        String sql = "INSERT INTO dos_rel_info (dos_rel_id, applicant_id, dos_rel_name, dos_rel, dos_rel_comp) VALUES (?, ?,?, ?, ?)";
 
         int numberOfRowsAffected = jdbcTemplate.update(
                         sql,
+                        d.getRelID(),
                         d.getId(),          
                         d.getName(),        
-                        d.getRelationship() 
+                        d.getRelationship(),
+                        d.getCompany() 
                     );
 
         return numberOfRowsAffected > 0;

@@ -1,12 +1,17 @@
-// ── Review & Summary Builder ──
-
 function buildSummary() {
   const fd = new FormData(document.getElementById('appForm'));
   const get = k => fd.get(k) || '<span style="color:#b0aec8">—</span>';
-  const civMap = { S: 'Single', M: 'Married', E: 'Separated', W: 'Widowed' };
-  const eduMap = { G: 'Grade School', H: 'High School', C: 'College', P: 'Post Graduate' };
-  const carMap = { O: 'Owned', M: 'Mortgaged', N: 'None' };
+  
+  // Note: If you updated your HTML dropdown option values to 
+  // full words (like 'SINGLE', 'COLLEGE'), mapping fallback handles it gracefully.
+  const civMap = { S: 'Single', M: 'Married', E: 'Separated', W: 'Widowed', SINGLE: 'Single', MARRIED: 'Married', SEPARATED: 'Separated', WIDOWED: 'Widowed' };
+  const eduMap = { G: 'Grade School', H: 'High School', C: 'College', P: 'Post Graduate', COLLEGE: 'College', POST_GRADUATE: 'Post Graduate' };
+  const carMap = { O: 'Owned', M: 'Mortgaged', N: 'None', OWNED: 'Owned', MORTGAGED: 'Mortgaged', NONE: 'None' };
   const cardMap = { H: 'Home Address', O: 'Office Address' };
+
+  // Scan the DOM directly to find out how many elements actually exist on screen right now
+  const actualDosRelCount = document.querySelectorAll('[id^="dosrel-"]').length;
+  const actualSupCount    = document.querySelectorAll('[id^="sup-"]').length;
 
   document.getElementById('summaryContent').innerHTML = `
     <table style="width:100%;border-collapse:collapse;font-size:13.5px">
@@ -17,7 +22,9 @@ function buildSummary() {
       <tr><td style="padding:8px 14px;color:var(--ink-light);width:40%">Full Name</td><td style="padding:8px 14px">${get('APP_NAME')}</td></tr>
       <tr style="background:var(--surface)"><td style="padding:8px 14px;color:var(--ink-light)">Card Name</td><td style="padding:8px 14px">${get('CARD_NAME')}</td></tr>
       <tr><td style="padding:8px 14px;color:var(--ink-light)">Birthdate / Birthplace</td><td style="padding:8px 14px">${get('APP_BDATE')} / ${get('APP_BPLACE')}</td></tr>
-      <tr style="background:var(--surface)"><td style="padding:8px 14px;color:var(--ink-light)">Sex</td><td style="padding:8px 14px">${get('APP_SEX') === 'M' ? 'Male' : get('APP_SEX') === 'F' ? 'Female' : '—'}</td></tr>
+      
+      <tr style="background:var(--surface)"><td style="padding:8px 14px;color:var(--ink-light)">Sex</td><td style="padding:8px 14px">${get('APP_SEX') === 'MALE' ? 'Male' : get('APP_SEX') === 'FEMALE' ? 'Female' : '—'}</td></tr>
+      
       <tr><td style="padding:8px 14px;color:var(--ink-light)">Civil Status</td><td style="padding:8px 14px">${civMap[get('CIVIL_STATUS')] || get('CIVIL_STATUS')}</td></tr>
       <tr style="background:var(--surface)"><td style="padding:8px 14px;color:var(--ink-light)">Dependents</td><td style="padding:8px 14px">${get('DEPENDENTS')}</td></tr>
       <tr><td style="padding:8px 14px;color:var(--ink-light)">Education</td><td style="padding:8px 14px">${eduMap[get('EDU_LEVEL')] || get('EDU_LEVEL')}</td></tr>
@@ -56,16 +63,22 @@ function buildSummary() {
         <td colspan="2" style="padding:10px 14px;font-weight:700;color:var(--red);font-size:13px;letter-spacing:.5px;text-transform:uppercase">DOS Disclosure</td>
       </tr>
       <tr><td style="padding:8px 14px;color:var(--ink-light)">Is DOS?</td><td style="padding:8px 14px">${get('DOS_FLAG') === 'true' ? 'Yes' : 'No'}</td></tr>
-      <tr style="background:var(--surface)"><td style="padding:8px 14px;color:var(--ink-light)">Related to DOS?</td><td style="padding:8px 14px">${get('REL_DOS_FLAG') === 'true' ? 'Yes' : 'No'}</td></tr>
+      
+      <tr style="background:var(--surface)"><td style="padding:8px 14px;color:var(--ink-light)">Related to DOS?</td><td style="padding:8px 14px">${get('DOS_REL_FLAG') === 'true' ? 'Yes' : 'No'}</td></tr>
+      
       ${get('DOS_FLAG') === 'true' ? `
       <tr><td style="padding:8px 14px;color:var(--ink-light)">DOS Company</td><td style="padding:8px 14px">${get('DOS_COMPANY')}</td></tr>
       <tr style="background:var(--surface)"><td style="padding:8px 14px;color:var(--ink-light)">DOS Position</td><td style="padding:8px 14px">${get('DOS_POS')}</td></tr>
+      ` : ''}
+      
+      ${get('DOS_REL_FLAG') === 'true' ? `
+      <tr><td style="padding:8px 14px;color:var(--ink-light)">DOS Relatives Count</td><td style="padding:8px 14px">${actualDosRelCount === 0 ? 'None added.' : actualDosRelCount + ' relative(s) configured.'}</td></tr>
       ` : ''}
 
       <tr style="background:var(--red-light)">
         <td colspan="2" style="padding:10px 14px;font-weight:700;color:var(--red);font-size:13px;letter-spacing:.5px;text-transform:uppercase">Supplementary Cardholders</td>
       </tr>
-      <tr><td colspan="2" style="padding:8px 14px;color:var(--ink-light)">${supCount === 0 ? 'None added.' : supCount + ' supplementary cardholder(s) added.'}</td></tr>
+      <tr><td colspan="2" style="padding:8px 14px;color:var(--ink-light)">${actualSupCount === 0 ? 'None added.' : actualSupCount + ' supplementary cardholder(s) added.'}</td></tr>
 
     </table>
   `;

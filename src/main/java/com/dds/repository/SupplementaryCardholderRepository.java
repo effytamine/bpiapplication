@@ -14,7 +14,14 @@ public class SupplementaryCardholderRepository {
     }
 
     public boolean populateSupplementaryCardholderTable(SupplementaryCardHolder s) {
-        // Added the 18th "?" placeholder at the end of the VALUES block
+        int currentCount = jdbcTemplate.queryForObject(
+            "SELECT COUNT(*) FROM supplementary_cardholder_details WHERE applicant_id = ?", 
+            Integer.class, 
+            Integer.valueOf(s.getApplicantID())
+        );
+        
+        s.setId(currentCount + 1);
+
         String sql = "INSERT INTO supplementary_cardholder_details (" +
                 "applicant_id, sup_id, sup_name, sup_bdate, sup_bplace, sup_sex, sup_status, sup_citizen, " +
                 "sup_addr, sup_home_no, sup_mobileno, sup_email, sup_employer, sup_emp_addr, " +

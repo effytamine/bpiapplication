@@ -37,10 +37,10 @@ function addSup() {
         <label>Civil Status <span class="req">*</span></label>
         <select name="SUP_STATUS_${id}">
           <option value="">Select</option>
-          <option value="S">Single</option>
-          <option value="M">Married</option>
-          <option value="E">Separated</option>
-          <option value="W">Widowed</option>
+          <option value="SINGLE">Single</option>
+          <option value="MARRIED">Married</option>
+          <option value="SEPARATED">Separated</option>
+          <option value="WIDOWED">Widowed</option>
         </select>
       </div>
       <div class="field">
@@ -68,7 +68,7 @@ function addSup() {
       </div>
       <div class="field col-2">
         <label>Email Address <span class="req">*</span></label>
-        <input type="email" name="SUP_EMAIL_${id}" placeholder="email@email.com" maxlength="15">
+        <input type="email" name="SUP_EMAIL_${id}" placeholder="email@email.com" maxlength="50">
       </div>
       <div class="field col-2">
         <label>Employer <span class="req">*</span></label>
