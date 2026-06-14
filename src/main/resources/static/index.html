@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/tabs.css">
   <link rel="stylesheet" href="css/form.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
 
@@ -22,6 +23,7 @@
   </div>
   <div class="header-sep"></div>
   <span class="header-tag">Credit Card Application</span>
+  <button class="admin-toggle-btn" id="adminToggleBtn">Admin View</button>
 </header>
 
 <div class="page-wrap">
@@ -383,6 +385,21 @@
   </form>
 </div>
 
+<!-- ══════════ ADMIN PANEL ══════════ -->
+<div id="adminPanel">
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-title">Admin Queries</div>
+    <div id="adminSidebar">
+      <!-- populated by admin.js -->
+    </div>
+  </aside>
+  <section class="admin-results">
+    <div id="adminResultsArea">
+      <!-- populated by admin.js -->
+    </div>
+  </section>
+</div>
+
 <div id="toast"></div>
 
 <!-- Scripts (order matters: tabs first, then features, then submit) -->
@@ -393,6 +410,7 @@
 <script src="js/summary.js"></script>
 <script src="js/models.js"></script> 
 <script src="js/form-submit.js"></script>
+<script src="js/admin.js"></script>
 
 </body>
 </html>

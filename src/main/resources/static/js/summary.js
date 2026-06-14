@@ -23,7 +23,7 @@ function buildSummary() {
       <tr style="background:var(--surface)"><td style="padding:8px 14px;color:var(--ink-light)">Card Name</td><td style="padding:8px 14px">${get('CARD_NAME')}</td></tr>
       <tr><td style="padding:8px 14px;color:var(--ink-light)">Birthdate / Birthplace</td><td style="padding:8px 14px">${get('APP_BDATE')} / ${get('APP_BPLACE')}</td></tr>
       
-      <tr style="background:var(--surface)"><td style="padding:8px 14px;color:var(--ink-light)">Sex</td><td style="padding:8px 14px">${get('APP_SEX') === 'MALE' ? 'Male' : get('APP_SEX') === 'FEMALE' ? 'Female' : '—'}</td></tr>
+      <tr style="background:var(--surface)"><td style="padding:8px 14px;color:var(--ink-light)">Sex</td><td style="padding:8px 14px">${get('APP_SEX') === 'M' ? 'Male' : get('APP_SEX') === 'F' ? 'Female' : '—'}</td></tr>
       
       <tr><td style="padding:8px 14px;color:var(--ink-light)">Civil Status</td><td style="padding:8px 14px">${civMap[get('CIVIL_STATUS')] || get('CIVIL_STATUS')}</td></tr>
       <tr style="background:var(--surface)"><td style="padding:8px 14px;color:var(--ink-light)">Dependents</td><td style="padding:8px 14px">${get('DEPENDENTS')}</td></tr>
