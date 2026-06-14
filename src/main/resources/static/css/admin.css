@@ -3,34 +3,34 @@
 .admin-toggle-btn {
   margin-left: auto;
   padding: 8px 18px;
-  background: transparent;
-  border: 2px solid rgba(255,255,255,0.55);
-  color: #fff;
+  background: #fff;           /* always solid white — always visible */
+  border: 2px solid #fff;
+  color: var(--red);
   border-radius: 6px;
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: .4px;
   cursor: pointer;
-  transition: background .2s, border-color .2s, color .2s;
+  transition: background .2s, border-color .2s, color .2s, opacity .2s;
 }
 
 .admin-toggle-btn:hover {
-  background: rgba(255,255,255,0.15);
-  border-color: #fff;
+  opacity: .85;
 }
 
+/* When admin panel is open, invert to red-on-white-outline */
 .admin-toggle-btn.active {
-  background: #fff;
-  color: var(--red);
+  background: transparent;
   border-color: #fff;
+  color: #fff;
 }
 
 /* ── Admin Panel Wrapper ─────────────────────────────────────────────────── */
 
 #adminPanel {
   display: none;
-  max-width: 1100px;
+  max-width: 1150px;
   margin: 36px auto 60px;
   padding: 0 20px;
 }
@@ -44,7 +44,7 @@
 /* ── Sidebar ─────────────────────────────────────────────────────────────── */
 
 .admin-sidebar {
-  flex: 0 0 270px;
+  flex: 0 0 275px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -62,6 +62,50 @@
   padding-bottom: 10px;
   border-bottom: 1px solid var(--border);
   letter-spacing: .3px;
+}
+
+/* ── Sidebar tab pills (Read / Active) ───────────────────────────────────── */
+
+.admin-sidebar-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.admin-sidebar-tab {
+  flex: 1;
+  padding: 7px 0;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  background: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-light);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color .15s, color .15s, background .15s;
+}
+
+.admin-sidebar-tab:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.admin-sidebar-tab.active {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+
+/* ── Query list items (shared) ───────────────────────────────────────────── */
+
+.admin-query-list {
+  display: none;
+}
+
+.admin-query-list.visible {
+  display: block;
 }
 
 .admin-query-btn {
@@ -108,8 +152,15 @@
   vertical-align: middle;
 }
 
-.admin-query-btn.active .q-num {
-  background: var(--red);
+/* Active-query items get a slightly different accent badge */
+.admin-query-btn.active-type .q-num {
+  background: #b45309;   /* amber tone to distinguish from read queries */
+}
+
+.admin-query-btn.active-type:hover,
+.admin-query-btn.active-type.active {
+  background: #fef3c7;
+  color: #92400e;
 }
 
 /* ── Results Area ────────────────────────────────────────────────────────── */
@@ -141,6 +192,122 @@
   line-height: 1.5;
 }
 
+/* ── Active Query panel sections ─────────────────────────────────────────── */
+
+.aq-section {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+
+.aq-section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.aq-step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.aq-step-badge.seed   { background: #dbeafe; color: #1d4ed8; }
+.aq-step-badge.verify { background: #fef9c3; color: #854d0e; }
+.aq-step-badge.exec   { background: #fee2e2; color: #991b1b; }
+
+.aq-section-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.aq-section-subtitle {
+  font-size: 12px;
+  color: var(--ink-light);
+  margin-left: auto;
+}
+
+.aq-section-body {
+  padding: 16px;
+}
+
+/* ── Action buttons ──────────────────────────────────────────────────────── */
+
+.aq-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity .18s, transform .12s;
+}
+
+.aq-btn:hover   { opacity: .88; transform: translateY(-1px); }
+.aq-btn:active  { transform: translateY(0); }
+.aq-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+.aq-btn-seed {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.aq-btn-verify {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.aq-btn-delete {
+  background: var(--red);
+  color: #fff;
+}
+
+.aq-btn-update {
+  background: #16a34a;
+  color: #fff;
+}
+
+/* ── Result / feedback inside each section ───────────────────────────────── */
+
+.aq-feedback {
+  margin-top: 14px;
+}
+
+.aq-success {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #166534;
+  font-weight: 500;
+}
+
+.aq-success-delete {
+  background: #fff5f5;
+  border-color: #fca5a5;
+  color: #991b1b;
+}
+
 /* ── States: placeholder / loading / error ───────────────────────────────── */
 
 .admin-placeholder {
@@ -155,9 +322,7 @@
   gap: 10px;
 }
 
-.admin-placeholder svg {
-  opacity: .3;
-}
+.admin-placeholder svg { opacity: .3; }
 
 .admin-loading {
   display: flex;
@@ -165,7 +330,7 @@
   gap: 10px;
   color: var(--ink-light);
   font-size: 13.5px;
-  padding: 40px 0;
+  padding: 30px 0;
   justify-content: center;
 }
 
@@ -178,9 +343,7 @@
   animation: admin-spin .7s linear infinite;
 }
 
-@keyframes admin-spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes admin-spin { to { transform: rotate(360deg); } }
 
 .admin-error {
   background: #fff5f5;
@@ -189,6 +352,7 @@
   padding: 14px 16px;
   color: #b91c1c;
   font-size: 13px;
+  margin-top: 10px;
 }
 
 /* ── Results Table ───────────────────────────────────────────────────────── */
@@ -225,9 +389,7 @@
   transition: background .12s;
 }
 
-.admin-table tbody tr:hover {
-  background: var(--surface);
-}
+.admin-table tbody tr:hover { background: var(--surface); }
 
 .admin-table tbody td {
   padding: 10px 14px;
@@ -247,4 +409,87 @@
   text-align: center;
   color: var(--ink-light);
   font-size: 13.5px;
+}
+
+/* ── Validation Error Banner ─────────────────────────────────────────────── */
+
+#validationBanner {
+  background: #fffefe;
+  border: 1.5px solid var(--border);
+  border-left: 4px solid var(--red);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 0 auto 24px auto;
+  max-width: 1110px;
+  box-shadow: 0 4px 14px rgba(165, 20, 23, 0.06);
+}
+
+.val-banner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+
+.val-banner-header strong {
+  color: var(--red);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.val-close {
+  background: none;
+  border: none;
+  color: var(--ink-light);
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.val-close:hover {
+  color: var(--red);
+}
+
+.val-banner-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.val-section-group {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+
+.val-section-badge {
+  display: inline-block;
+  background: var(--red);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.val-list {
+  margin: 0;
+  padding-left: 18px;
+  list-style-type: square;
+}
+
+.val-list li {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.6;
+  font-family: 'DM Sans', sans-serif;
 }

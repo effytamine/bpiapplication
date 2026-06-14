@@ -385,11 +385,21 @@
   </form>
 </div>
 
+<div id="toast"></div>
+
+<!-- Scripts (order matters: tabs first, then features, then submit) -->
 <!-- ══════════ ADMIN PANEL ══════════ -->
 <div id="adminPanel">
   <aside class="admin-sidebar">
     <div class="admin-sidebar-title">Admin Queries</div>
-    <div id="adminSidebar">
+    <div class="admin-sidebar-tabs">
+      <button class="admin-sidebar-tab active" data-tab="read">Read</button>
+      <button class="admin-sidebar-tab" data-tab="active">Active</button>
+    </div>
+    <div class="admin-query-list visible" data-list="read" id="adminSidebarRead">
+      <!-- populated by admin.js -->
+    </div>
+    <div class="admin-query-list" data-list="active" id="adminSidebarActive">
       <!-- populated by admin.js -->
     </div>
   </aside>
@@ -400,16 +410,14 @@
   </section>
 </div>
 
-<div id="toast"></div>
-
-<!-- Scripts (order matters: tabs first, then features, then submit) -->
 <script src="js/tabs.js"></script>
 <script src="js/civil-status.js"></script>
 <script src="js/dos.js"></script>
 <script src="js/supplementary.js"></script>
 <script src="js/summary.js"></script>
-<script src="js/models.js"></script> 
+<script src="js/models.js"></script>
 <script src="js/form-submit.js"></script>
+<script src="js/validation.js"></script>
 <script src="js/admin.js"></script>
 
 </body>
