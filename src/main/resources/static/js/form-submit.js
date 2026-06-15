@@ -20,6 +20,9 @@ document.getElementById('appForm').addEventListener('submit', async function (e)
 
   const fd = new FormData(this);
 
+  // ── Business rule + required field validation ──
+  if (!validateForm(fd)) return;
+
   // ── Build structured payload ──
 
   const applicant = new Applicant(fd);
