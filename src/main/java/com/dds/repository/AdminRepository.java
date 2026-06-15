@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class AdminRepository {
@@ -253,18 +254,19 @@ public class AdminRepository {
         return jdbcTemplate.queryForList(sql);
     }
 
-    // Execution DELETE — removes the high-risk supplementary rows
+    // Execution DELETE — permanently deletes records from the database
+    @Transactional
     public int executeQuery11() {
+        // Disable safe updates, execute the delete statement, and re-enable safe updates in one transaction context
         jdbcTemplate.execute("SET SQL_SAFE_UPDATES = 0");
+
         int rows = jdbcTemplate.update("""
-                DELETE sup
-                FROM supplementary_cardholder_details sup
-                JOIN applicants a  ON sup.applicant_id = a.applicant_id
-                JOIN work_details w ON a.applicant_id  = w.applicant_id
-                WHERE a.car_own = 'NONE'
-                  AND a.yrs_res < 2
-                  AND w.monthly_income < 35000.00
+                DELETE a FROM applicants a
+                LEFT JOIN supplementary_cardholder_details sup ON a.applicant_id = sup.applicant_id
+                WHERE a.civil_status = 'SINGLE'
+                AND sup.applicant_id IS NOT NULL
                 """);
+
         jdbcTemplate.execute("SET SQL_SAFE_UPDATES = 1");
         return rows;
     }
@@ -359,17 +361,20 @@ public class AdminRepository {
         return jdbcTemplate.queryForList(sql);
     }
 
-    // Execution UPDATE — reassigns employer/business to BPI Unibank / Banking
+    // Execution UPDATE — permanently saves the new reassigned details
+    @Transactional
     public int executeQuery12() {
         jdbcTemplate.execute("SET SQL_SAFE_UPDATES = 0");
+
         int rows = jdbcTemplate.update("""
                 UPDATE supplementary_cardholder_details sup
                 JOIN applicants a ON sup.applicant_id = a.applicant_id
                 SET sup.sup_employer = 'BPI Unibank',
                     sup.sup_business = 'Banking'
                 WHERE (a.home_address LIKE '%Cebu City%' OR a.home_address LIKE '%Pasig City%')
-                  AND sup.sup_funds != 'Allowance'
+                AND sup.sup_funds != 'Allowance'
                 """);
+
         jdbcTemplate.execute("SET SQL_SAFE_UPDATES = 1");
         return rows;
     }
